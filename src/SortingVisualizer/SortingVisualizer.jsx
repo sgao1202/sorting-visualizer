@@ -27,7 +27,6 @@ export default class SortingVisualizer extends React.Component {
             return a - b;
         });
         const mergedArray = sortingAlgorithms.mergeSort(this.state.array);
-
         console.log(arraysEqual(arr, mergedArray));
     }
 
