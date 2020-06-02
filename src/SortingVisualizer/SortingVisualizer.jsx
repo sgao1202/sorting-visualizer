@@ -4,8 +4,8 @@ import './SortingVisualizer.css';
 
 const ANIMATION_SPEED_MS = 2;
 const MAX_LENGTH = 300;
-const PRIMARY_COLOR = 'teal';
-const SECONDARY_COLOR = 'purple';
+const PRIMARY_COLOR = '#BB86fc';
+const SECONDARY_COLOR = '#3700B3';
 
 export default class SortingVisualizer extends React.Component {
     constructor(props) {
@@ -72,18 +72,21 @@ export default class SortingVisualizer extends React.Component {
         const curr_array = this.state.array;
         return (
             <div  className="array-container">
+                <nav>
+                    <ul>
+                        <li><button onClick={() => this.resetArray()} className="create-new-arr">Generate New Array</button></li>
+                        <li><button onClick={() => this.mergeSort()}>Merge Sort</button></li>
+                        <li><button onClick={() => this.quickSort()}>Quick Sort</button></li>
+                        <li><button onClick={() => this.heapSort()}>Heap Sort</button></li>
+                        <li><button onClick={() => this.bubbleSort()}>Bubble Sort</button></li>
+                    </ul>
+                </nav>
+
                 {curr_array.map((value, idx) => (
                     <div className="array-bar" 
                         key={idx} 
                         style={{height: `${value}px`}}></div>
                 ))}
-                <div>
-                <button onClick={() => this.resetArray()}>Generate New Array</button>
-                <button onClick={() => this.mergeSort()}>Merge Sort</button>
-                <button onClick={() => this.quickSort()}>Quick Sort</button>
-                <button onClick={() => this.heapSort()}>Heap Sort</button>
-                <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
-                </div>
             </div>
         );
     }
