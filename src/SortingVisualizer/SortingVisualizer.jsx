@@ -2,6 +2,11 @@ import React from 'react';
 import * as sortingAlgorithms from '../sortingAlgorithms/sortingAlgorithms.js'
 import './SortingVisualizer.css';
 
+const ANIMATION_SPEED_MS = 2;
+const MAX_LENGTH = 300;
+const PRIMARY_COLOR = 'teal';
+const SECONDARY_COLOR = 'purple';
+
 export default class SortingVisualizer extends React.Component {
     constructor(props) {
         super(props);
@@ -16,18 +21,39 @@ export default class SortingVisualizer extends React.Component {
 
     resetArray() {
         let arr = [];
-        for (let i = 0; i < 300; i++) {
+        for (let i = 0; i < MAX_LENGTH; i++) {
             arr.push(randomIntFromInterval(5, 750));
         }
         this.setState({array:arr});
     }
 
     mergeSort() {
-        const arr = this.state.array.slice().sort((a,b) => {
-            return a - b;
-        });
-        const mergedArray = sortingAlgorithms.mergeSort(this.state.array);
-        console.log(arraysEqual(arr, mergedArray));
+        const animations = sortingAlgorithms.mergeSort(this.state.array);
+        for (let i = 0; i < animations.length; i++) {
+            const arr_bars = document.getElementsByClassName('array-bar');
+            const color_change = i % 3 !== 2;
+            if (color_change) {
+                console.log(animations[i])
+                const [b1_idx, b2_idx] = animations[i];
+                if (b1_idx < MAX_LENGTH && b2_idx < MAX_LENGTH) {
+                    const b1_style = arr_bars[b1_idx].style;
+                    const b2_style = arr_bars[b2_idx].style;
+                    const color = i % 3 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
+                    setTimeout(() => {
+                        b1_style.backgroundColor = color;
+                        b2_style.backgroundColor = color;   
+                    }, i * ANIMATION_SPEED_MS);
+                }
+            } else {
+                setTimeout(() => {
+                    const [b1_idx, new_height] = animations[i];
+                    if (b1_idx < this.state.array.length) {
+                        const b1_style = arr_bars[b1_idx].style;
+                        b1_style.height = `${new_height}px`;
+                    }
+                }, i * ANIMATION_SPEED_MS);
+            }
+        }
     }
 
     quickSort() {
